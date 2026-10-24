@@ -52,12 +52,16 @@ class MainActivity : ComponentActivity() {
                         var selectedExercise by remember {
                             mutableStateOf<Exercise?>(null)
                         }
-
+// Keeps track of the workout category selected on the dashboard
+                        var selectedCategory by rememberSaveable {
+                            mutableStateOf("Strength")
+                        }
                         when (currentScreen) {
                             "workouts" -> {
                                 DashboardScreen(
                                     uiState = workoutViewModel.uiState,
                                     onCategoryClick = { category ->
+                                        selectedCategory = category
                                         currentScreen = "exercises"
                                     },
                                     onClearLogs = {
@@ -73,7 +77,7 @@ class MainActivity : ComponentActivity() {
                                     }
 
                                     ExerciseListScreen(
-                                        category = "Strength",
+                                        category = selectedCategory,
                                         onExerciseClick = { exercise ->
                                             selectedExercise = exercise
                                             currentScreen = "details"
