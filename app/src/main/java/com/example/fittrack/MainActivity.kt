@@ -33,7 +33,7 @@ import com.example.fittrack.screens.ExerciseListScreen
 import com.example.fittrack.model.Exercise
 import com.example.fittrack.screens.ExerciseDetailScreen
 import com.example.fittrack.viewmodel.WorkoutViewModel
-
+import com.example.fittrack.screens.DashboardScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,13 +55,15 @@ class MainActivity : ComponentActivity() {
 
                         when (currentScreen) {
                             "workouts" -> {
-                                Column {
-                                    Button(onClick = { currentScreen = "exercises" }) {
-                                        Text("Browse Strength Exercises")
+                                DashboardScreen(
+                                    uiState = workoutViewModel.uiState,
+                                    onCategoryClick = { category ->
+                                        currentScreen = "exercises"
+                                    },
+                                    onClearLogs = {
+                                        workoutViewModel.clearLogs()
                                     }
-
-                                    WorkoutScreen()
-                                }
+                                )
                             }
 
                             "exercises" -> {
