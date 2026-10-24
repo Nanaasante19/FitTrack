@@ -28,6 +28,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.example.fittrack.screens.ExerciseListScreen
+
 
 
 class MainActivity : ComponentActivity() {
@@ -40,7 +43,36 @@ class MainActivity : ComponentActivity() {
                     androidx.compose.foundation.layout.Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        WorkoutScreen()
+                        var currentScreen by rememberSaveable {
+                            mutableStateOf("workouts")
+                        }
+
+                        when (currentScreen) {
+                            "workouts" -> {
+                                Column {
+                                    Button(onClick = { currentScreen = "exercises" }) {
+                                        Text("Browse Strength Exercises")
+                                    }
+
+                                    WorkoutScreen()
+                                }
+                            }
+
+                            "exercises" -> {
+                                Column {
+                                    Button(onClick = { currentScreen = "workouts" }) {
+                                        Text("Back to Workouts")
+                                    }
+
+                                    ExerciseListScreen(
+                                        category = "Strength",
+                                        onExerciseClick = { exercise ->
+                                            // We'll open exercise details in a later step.
+                                        }
+                                    )
+                                }
+                            }
+                        }
                     }
 
 
