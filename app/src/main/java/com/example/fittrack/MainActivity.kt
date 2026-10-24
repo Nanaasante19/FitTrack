@@ -32,12 +32,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import com.example.fittrack.screens.ExerciseListScreen
 import com.example.fittrack.model.Exercise
 import com.example.fittrack.screens.ExerciseDetailScreen
+import com.example.fittrack.viewmodel.WorkoutViewModel
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val workoutViewModel = androidx.lifecycle.ViewModelProvider(this)[WorkoutViewModel::class.java]
         setContent {
             FitTrackTheme {
                 Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
@@ -86,7 +88,8 @@ class MainActivity : ComponentActivity() {
                                             currentScreen = "exercises"
                                         },
                                         onLogWorkout = { name, minutes ->
-                                            // We'll connect workout saving next.
+                                            workoutViewModel.logWorkout(name, minutes)
+
                                         }
                                     )
                                 }
