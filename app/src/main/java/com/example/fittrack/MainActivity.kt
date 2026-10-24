@@ -30,7 +30,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import com.example.fittrack.screens.ExerciseListScreen
-
+import com.example.fittrack.model.Exercise
+import com.example.fittrack.screens.ExerciseDetailScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +46,9 @@ class MainActivity : ComponentActivity() {
                     ) {
                         var currentScreen by rememberSaveable {
                             mutableStateOf("workouts")
+                        }
+                        var selectedExercise by remember {
+                            mutableStateOf<Exercise?>(null)
                         }
 
                         when (currentScreen) {
@@ -67,7 +71,22 @@ class MainActivity : ComponentActivity() {
                                     ExerciseListScreen(
                                         category = "Strength",
                                         onExerciseClick = { exercise ->
-                                            // We'll open exercise details in a later step.
+                                            selectedExercise = exercise
+                                            currentScreen = "details"
+
+                                        }
+                                    )
+                                }
+                            }
+                            "details" -> {
+                                selectedExercise?.let { exercise ->
+                                    ExerciseDetailScreen(
+                                        exercise = exercise,
+                                        onBack = {
+                                            currentScreen = "exercises"
+                                        },
+                                        onLogWorkout = { name, minutes ->
+                                            // We'll connect workout saving next.
                                         }
                                     )
                                 }
